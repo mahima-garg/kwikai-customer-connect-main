@@ -1,56 +1,27 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, ClipboardCheck, Package } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent } from '@/components/ui/card';
+import { ClipboardCheck, Package } from 'lucide-react';
+import { AppLayout } from '@/components/AppLayout';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const reasonOptions = [
-  "Refund Status",
-  "Refund Not Credited",
-  "Order Status",
-  "Amount Debited Order Not Confirmed",
-];
+const reasonOptions = ['Refund Status', 'Refund Not Credited', 'Order Status', 'Amount Debited Order Not Confirmed'];
 
 const issueOptions = {
-  "Refund Status": [
-    "Need ARN number",
-    "Refund timeline query",
-    "Refund status check",
-    "Others",
-  ],
-  "Refund Not Credited": [
-    "Bank statement verification",
-    "Payment gateway issue",
-    "Delayed refund",
-    "Others",
-  ],
-  "Order Status": [
-    "Where is my order",
-    "Order delayed",
-    "Wrong order delivered",
-    "Others",
-  ],
-  "Amount Debited Order Not Confirmed": [
-    "Transaction failed after payment",
-    "Double payment",
-    "Payment stuck",
-    "Others",
+  'Refund Status': ['Need ARN number', 'Refund timeline query', 'Refund status check', 'Others'],
+  'Refund Not Credited': ['Bank statement verification', 'Payment gateway issue', 'Delayed refund', 'Others'],
+  'Order Status': ['Where is my order', 'Order delayed', 'Wrong order delivered', 'Others'],
+  'Amount Debited Order Not Confirmed': [
+    'Transaction failed after payment',
+    'Double payment',
+    'Payment stuck',
+    'Others',
   ],
 };
 
@@ -60,9 +31,9 @@ const TransactionDetails = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [reason, setReason] = useState<string>("");
-  const [issueType, setIssueType] = useState<string>("");
-  const [description, setDescription] = useState("");
+  const [reason, setReason] = useState<string>('');
+  const [issueType, setIssueType] = useState<string>('');
+  const [description, setDescription] = useState('');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -71,23 +42,19 @@ const TransactionDetails = () => {
   }, [isAuthenticated, navigate]);
 
   const order = detailedOrders.find((o) => o.order_number === orderId);
-  
+
   if (!order) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Order Not Found</h1>
-          <Button onClick={() => navigate('/dashboard')}>
-            Go to Dashboard
-          </Button>
+      <div className='min-h-screen flex items-center justify-center'>
+        <div className='text-center'>
+          <h1 className='text-2xl font-bold mb-4'>Order Not Found</h1>
+          <Button onClick={() => navigate('/dashboard')}>Go to Dashboard</Button>
         </div>
       </div>
     );
   }
 
-  const successTransaction = order.transactions.find(t => t.status === 'success') || order.transactions[0];
-  
-  const latestRefund = order.refunds.length > 0 ? order.refunds[0] : null;
+  const successTransaction = order.transactions.find((t) => t.status === 'success') || order.transactions[0];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +65,7 @@ const TransactionDetails = () => {
       description,
     });
     toast({
-      title: "Support ticket created",
+      title: 'Support ticket created',
       description: "We'll get back to you soon",
     });
     setIsDialogOpen(false);
@@ -107,267 +74,399 @@ const TransactionDetails = () => {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast({
-      title: "Copied to clipboard",
-      description: "The payment ID has been copied to your clipboard",
+      title: 'Copied to clipboard',
+      description: 'The payment ID has been copied to your clipboard',
     });
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm py-4">
-        <div className="container mx-auto px-4">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/dashboard')}
-            className="flex items-center"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Dashboard
-          </Button>
-        </div>
-      </header>
-      
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-2">Payment Details</h1>
-        <p className="text-gray-500 mb-8">
+    <AppLayout>
+      <div>
+        <h1 className='text-3xl font-bold mb-2'>Order Details</h1>
+        <p className='text-gray-500 mb-6'>
           Order {order.shopify_order_name} • {order.order_number}
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="md:col-span-2">
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-semibold mb-6">Transaction Information</h2>
-              
-              <div className="bg-green-50 p-4 rounded-lg mb-6">
-                <h3 className="text-xl font-medium text-green-700">
-                  Payment was successfully settled to the Merchant
-                </h3>
-                <p className="text-gray-600 mt-1">
-                  Your payment of ₹{order.total_amount} made towards {order.customer.name.split(' ')[0].toUpperCase()} has been successful. 
-                  We request you to contact {order.customer.name.split(' ')[0].toUpperCase()} for any update on the service or to initiate a refund in case the service/goods were not delivered.
-                </p>
-              </div>
-              
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="h-16 w-16 bg-gradient-to-br from-yellow-200 to-blue-400 rounded-md flex items-center justify-center">
-                    {order.items[0]?.image ? (
-                      <img 
-                        src={order.items[0].image} 
-                        alt={order.items[0].name} 
-                        className="h-12 w-12 object-contain"
-                      />
-                    ) : (
-                      <div className="text-3xl font-bold text-blue-900">
-                        {order.customer?.name?.charAt(0) || 'M'}
-                      </div>
-                    )}
+        <Tabs defaultValue='details' className='mb-6'>
+          <TabsList className='w-full mb-6'>
+            <TabsTrigger value='details' className='flex-1'>
+              Order Details
+            </TabsTrigger>
+            <TabsTrigger value='transactions' className='flex-1'>
+              Transactions
+            </TabsTrigger>
+            <TabsTrigger value='refunds' className='flex-1'>
+              Refunds
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value='details' className='overflow-y-auto' style={{ height: '600px' }}>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+              <Card className='md:col-span-2'>
+                <CardContent className='p-6'>
+                  <h2 className='text-2xl font-semibold mb-6'>Order Summary</h2>
+
+                  <div className='bg-green-50 p-4 rounded-lg mb-6'>
+                    <h3 className='text-xl font-medium text-green-700'>
+                      Order Status:{' '}
+                      {order.order_status === 'returned'
+                        ? 'RETURNED'
+                        : order.order_status === 'cancelled'
+                        ? 'CANCELLED'
+                        : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
+                        ? 'REFUNDED'
+                        : order.order_status === 'not_confirmed'
+                        ? 'NOT CONFIRMED'
+                        : order.order_status.toUpperCase()}
+                    </h3>
+                    <p className='text-gray-600 mt-2'>
+                      {order.order_status === 'returned'
+                        ? 'Order was picked up and return has been processed'
+                        : order.order_status === 'cancelled'
+                        ? order.delivery_status
+                        : order.refunds && order.refunds.length > 0
+                        ? 'Refund has been processed for this order'
+                        : order.order_status === 'not_confirmed' && order.payment_status
+                        ? 'Payment received but order was not confirmed. Refund will be processed automatically.'
+                        : order.delivery_status}
+                    </p>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold">{order.customer.name.split(' ')[0].toUpperCase()}</h3>
-                    <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                      successTransaction?.status === "success" ? "bg-green-100 text-green-800" : 
-                      successTransaction?.status === "initiated" ? "bg-yellow-100 text-yellow-800" : 
-                      "bg-red-100 text-red-800"
-                    }`}>
-                      {successTransaction?.status === "success" ? "SUCCESS" : 
-                       successTransaction?.status === "initiated" ? "PENDING" : 
-                       "FAILED"}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b pb-3">
-                    <span className="text-gray-600">Payment ID:</span>
-                    <div className="flex items-center">
-                      <span className="font-medium">{successTransaction?.payment_id}</span>
-                      <button 
-                        onClick={() => copyToClipboard(successTransaction?.payment_id)}
-                        className="ml-2 text-blue-600 hover:text-blue-800"
-                      >
-                        <ClipboardCheck size={16} />
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-between items-center border-b pb-3">
-                    <span className="text-gray-600">Date and Time:</span>
-                    <span className="font-medium">
-                      {new Date(successTransaction?.created_at).toLocaleString('en-US', {
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric',
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        hour12: true
-                      })}
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center border-b pb-3">
-                    <span className="text-gray-600">Payment Amount:</span>
-                    <span className="font-medium">₹{successTransaction?.amount}</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center border-b pb-3">
-                    <span className="text-gray-600">Payment Method:</span>
-                    <span className="font-medium capitalize">{successTransaction?.payment_method}</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Payment Gateway:</span>
-                    <span className="font-medium capitalize">{successTransaction?.payment_provider}</span>
-                  </div>
-                </div>
-              </div>
-              
-              {latestRefund && (
-                <div className="mt-6 bg-yellow-50 p-6 rounded-lg">
-                  <h3 className="text-xl font-semibold mb-4">Refund Information</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center border-b pb-3">
-                      <span className="text-gray-600">Refund Status:</span>
-                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        latestRefund.status === "Success" ? "bg-green-100 text-green-800" : 
-                        "bg-yellow-100 text-yellow-800"
-                      }`}>
-                        {latestRefund.status.toUpperCase()}
-                      </div>
-                    </div>
-                    
-                    <div className="flex justify-between items-center border-b pb-3">
-                      <span className="text-gray-600">Refund ID:</span>
-                      <span className="font-medium">{latestRefund.refund_id}</span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center border-b pb-3">
-                      <span className="text-gray-600">Refund Amount:</span>
-                      <span className="font-medium">₹{latestRefund.amount}</span>
-                    </div>
-                    
-                    {latestRefund.arn_number && (
-                      <div className="flex justify-between items-center border-b pb-3">
-                        <span className="text-gray-600">ARN Number:</span>
-                        <span className="font-medium">{latestRefund.arn_number}</span>
-                      </div>
-                    )}
-                    
-                    <div className="flex justify-between items-center border-b pb-3">
-                      <span className="text-gray-600">Refund Type:</span>
-                      <span className="font-medium">{latestRefund.refund_type}</span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Refund Date:</span>
-                      <span className="font-medium">
-                        {new Date(latestRefund.refunded_at || latestRefund.created_at).toLocaleString('en-US', {
+
+                  <div className='space-y-5'>
+                    <div className='flex justify-between items-center border-b pb-4'>
+                      <span className='text-gray-600 font-medium'>Order Date:</span>
+                      <span className='font-medium text-right'>
+                        {new Date(order.payment_at).toLocaleString('en-US', {
                           month: 'long',
                           day: 'numeric',
-                          year: 'numeric'
+                          year: 'numeric',
                         })}
                       </span>
                     </div>
+
+                    <div className='flex justify-between items-center border-b pb-4'>
+                      <span className='text-gray-600 font-medium'>Order Status:</span>
+                      <div
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          order.order_status === 'returned'
+                            ? 'bg-orange-100 text-orange-800'
+                            : order.order_status === 'cancelled'
+                            ? 'bg-red-100 text-red-800'
+                            : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
+                            ? 'bg-red-100 text-red-800'
+                            : order.order_status === 'shipped'
+                            ? 'bg-blue-100 text-blue-800'
+                            : order.order_status === 'confirmed' || order.order_status === 'delivered'
+                            ? 'bg-green-100 text-green-800'
+                            : order.order_status === 'processing'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : order.order_status === 'not_confirmed'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}
+                      >
+                        {order.order_status === 'returned'
+                          ? 'RETURNED'
+                          : order.order_status === 'cancelled'
+                          ? 'CANCELLED'
+                          : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
+                          ? 'REFUNDED'
+                          : order.order_status === 'not_confirmed'
+                          ? 'NOT CONFIRMED'
+                          : order.order_status.toUpperCase()}
+                      </div>
+                    </div>
+
+                    <div className='flex justify-between items-center border-b pb-4'>
+                      <span className='text-gray-600 font-medium'>Payment Method:</span>
+                      <span className='font-medium capitalize text-right'>{order.payment_method}</span>
+                    </div>
+
+                    <div className='flex justify-between items-center pt-2'>
+                      <span className='text-gray-600 font-medium'>Total Amount:</span>
+                      <span className='font-bold text-lg'>₹{order.total_amount}</span>
+                    </div>
                   </div>
-                </div>
-              )}
-              
-              <div className="mt-6">
-                <Button 
-                  onClick={() => setIsDialogOpen(true)}
-                  className="w-full md:w-auto bg-blue-900 hover:bg-blue-800"
-                >
-                  Contact Support
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Order Information</h2>
-              
-              <div className="space-y-4">
-                {order.items.map((item, index) => (
-                  <div key={index} className="flex gap-3">
-                    <div className="h-16 w-16 bg-gray-100 rounded flex items-center justify-center">
-                      {item.image ? (
-                        <img 
-                          src={item.image} 
-                          alt={item.name} 
-                          className="h-14 w-14 object-contain"
-                        />
-                      ) : (
-                        <Package className="h-6 w-6 text-gray-500" />
+
+                  <div className='border rounded-md p-4 bg-gray-50 mt-6'>
+                    <h3 className='text-sm font-semibold mb-3'>Order Summary</h3>
+                    <div className='space-y-2'>
+                      <div className='flex justify-between items-center text-xs'>
+                        <span className='text-gray-600'>Original Price:</span>
+                        <span>₹{order.original_price}</span>
+                      </div>
+                      {order.discount_details.discount_amount > 0 && (
+                        <div className='flex justify-between items-center text-xs text-green-600'>
+                          <span>Discount ({order.discount_details.coupon_code}):</span>
+                          <span>-₹{order.discount_details.discount_amount}</span>
+                        </div>
                       )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium line-clamp-2">{item.name}</p>
-                      <p className="text-xs text-gray-500">Qty: {item.quantity} × ₹{item.price}</p>
+                      <div className='flex justify-between items-center font-bold text-sm mt-2 pt-2 border-t'>
+                        <span>Total Amount:</span>
+                        <span>₹{order.total_amount}</span>
+                      </div>
                     </div>
                   </div>
-                ))}
-                
-                <div className="border-t pt-4 mt-4">
-                  <div className="flex justify-between items-center text-sm">
-                    <span>Original Price:</span>
-                    <span>₹{order.original_price}</span>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className='p-6'>
+                  <h2 className='text-xl font-semibold mb-4'>Order Items</h2>
+
+                  <div className='space-y-6'>
+                    {order.items.map((item, index) => (
+                      <div key={index} className='border rounded-md p-3 bg-gray-50'>
+                        <div className='flex gap-3 items-start'>
+                          <div className='h-16 w-16 bg-white rounded-md flex items-center justify-center flex-shrink-0'>
+                            {item.image ? (
+                              <img src={item.image} alt={item.name} className='h-14 w-14 object-contain' />
+                            ) : (
+                              <Package className='h-6 w-6 text-gray-500' />
+                            )}
+                          </div>
+                          <div className='flex-1 min-w-0 overflow-hidden'>
+                            <p className='text-sm font-medium line-clamp-2'>{item.name}</p>
+                            <p className='text-xs text-gray-500 mt-1'>Qty: {item.quantity}</p>
+                          </div>
+                        </div>
+
+                        <div className='flex justify-between items-center border-t mt-3 pt-2'>
+                          <div className='text-xs text-gray-600'>Unit Price: ₹{parseFloat(item.price).toFixed(2)}</div>
+                          <div className='text-sm font-bold'>₹{(item.quantity * item.price).toFixed(2)}</div>
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className='border-t pt-4 mt-6'>
+                      <h3 className='font-medium text-base mb-3'>Shipping Information</h3>
+                      <div className='border rounded-md p-4 bg-gray-50'>
+                        <p className='text-sm font-medium'>{order.customer.name}</p>
+                        <p className='text-sm mt-1'>{order.customer.address.line1}</p>
+                        <p className='text-sm'>
+                          {order.customer.address.city}, {order.customer.address.state} {order.customer.address.pincode}
+                        </p>
+                        <p className='text-sm mt-1'>{order.customer.phone}</p>
+                      </div>
+                    </div>
+
+                    <div className='border-t pt-4 mt-6'>
+                      <h3 className='font-medium text-base mb-3'>Delivery Status</h3>
+                      <div className='border rounded-md p-4 bg-gray-50'>
+                        <div className='flex items-center gap-2'>
+                          <div
+                            className={`w-3 h-3 rounded-full ${
+                              order.order_status === 'returned'
+                                ? 'bg-orange-500'
+                                : order.order_status === 'cancelled'
+                                ? 'bg-red-500'
+                                : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
+                                ? 'bg-red-500'
+                                : order.order_status === 'shipped'
+                                ? 'bg-blue-500'
+                                : order.order_status === 'confirmed' || order.order_status === 'delivered'
+                                ? 'bg-green-500'
+                                : order.order_status === 'not_confirmed'
+                                ? 'bg-yellow-500'
+                                : 'bg-yellow-500'
+                            }`}
+                          ></div>
+                          <p className='text-sm font-medium'>
+                            {order.order_status === 'returned'
+                              ? 'Order was picked up and return has been processed'
+                              : order.order_status === 'cancelled'
+                              ? order.delivery_status
+                              : order.refunds && order.refunds.length > 0
+                              ? 'Refund has been processed for this order'
+                              : order.order_status === 'not_confirmed' && order.payment_status
+                              ? 'Payment received but order was not confirmed. Refund will be processed automatically.'
+                              : order.delivery_status}
+                          </p>
+                        </div>
+                        {order.shipping.estimated_delivery &&
+                          !(order.refunds && order.refunds.length > 0) &&
+                          order.order_status !== 'returned' &&
+                          order.order_status !== 'cancelled' && (
+                            <p className='text-sm text-gray-500 mt-2'>
+                              Estimated Delivery: {new Date(order.shipping.estimated_delivery).toLocaleDateString()}
+                            </p>
+                          )}
+                      </div>
+                    </div>
                   </div>
-                  {order.discount_details.discount_amount > 0 && (
-                    <div className="flex justify-between items-center text-sm text-green-600">
-                      <span>Discount ({order.discount_details.coupon_code}):</span>
-                      <span>-₹{order.discount_details.discount_amount}</span>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value='transactions' className='overflow-y-auto' style={{ height: '600px' }}>
+            <Card>
+              <CardContent className='p-4'>
+                <h2 className='text-xl font-semibold mb-4'>All Transactions</h2>
+
+                <div className='space-y-4'>
+                  {order.transactions.length > 0 ? (
+                    order.transactions.map((transaction, index) => (
+                      <div key={index} className='border rounded-lg p-3'>
+                        <div className='flex items-center justify-between flex-wrap gap-2'>
+                          <div>
+                            <h3 className='font-bold text-base'>{transaction.payment_provider.toUpperCase()}</h3>
+                            <p className='text-xs text-gray-500'>{new Date(transaction.created_at).toLocaleString()}</p>
+                          </div>
+                          <div
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              transaction.status === 'success'
+                                ? 'bg-green-100 text-green-800'
+                                : transaction.status === 'pending'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-red-100 text-red-800'
+                            }`}
+                          >
+                            {transaction.status.toUpperCase()}
+                          </div>
+                        </div>
+
+                        <div className='mt-3 space-y-2'>
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-gray-600'>Payment ID:</span>
+                            <div className='flex items-center'>
+                              <span className='font-medium'>{transaction.payment_id}</span>
+                              <button
+                                onClick={() => copyToClipboard(transaction.payment_id)}
+                                className='ml-2 text-blue-600 hover:text-blue-800'
+                              >
+                                <ClipboardCheck size={16} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-gray-600'>Amount:</span>
+                            <span className='font-medium'>₹{transaction.amount}</span>
+                          </div>
+
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-gray-600'>Method:</span>
+                            <span className='font-medium capitalize'>{transaction.payment_method}</span>
+                          </div>
+
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-gray-600'>Bank Status:</span>
+                            <span className='font-medium'>{transaction.bank_status}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className='text-center p-8 bg-gray-100 rounded-lg'>
+                      <p>No transaction records found.</p>
                     </div>
                   )}
-                  <div className="flex justify-between items-center font-bold mt-2">
-                    <span>Total Amount:</span>
-                    <span>₹{order.total_amount}</span>
-                  </div>
                 </div>
-                
-                <div className="border-t pt-4 mt-4">
-                  <h3 className="font-medium mb-2">Shipping Information</h3>
-                  <p className="text-sm">{order.customer.name}</p>
-                  <p className="text-sm">{order.customer.address.line1}</p>
-                  <p className="text-sm">
-                    {order.customer.address.city}, {order.customer.address.state} {order.customer.address.pincode}
-                  </p>
-                  <p className="text-sm">{order.customer.phone}</p>
-                </div>
-                
-                <div className="border-t pt-4 mt-4">
-                  <h3 className="font-medium mb-2">Delivery Status</h3>
-                  <p className="text-sm">{order.delivery_status}</p>
-                  {order.shipping.estimated_delivery && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      Estimated Delivery: {new Date(order.shipping.estimated_delivery).toLocaleDateString()}
-                    </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value='refunds' className='overflow-y-auto' style={{ height: '600px' }}>
+            <Card>
+              <CardContent className='p-4'>
+                <h2 className='text-xl font-semibold mb-4'>All Refunds</h2>
+
+                <div className='space-y-4'>
+                  {order.refunds.length > 0 ? (
+                    order.refunds.map((refund, index) => (
+                      <div key={index} className='border rounded-lg p-3'>
+                        <div className='flex items-center justify-between flex-wrap gap-2'>
+                          <div>
+                            <h3 className='font-bold text-base'>Refund {index + 1}</h3>
+                            <p className='text-xs text-gray-500'>
+                              {refund.refunded_at
+                                ? new Date(refund.refunded_at).toLocaleString()
+                                : new Date(refund.created_at).toLocaleString() + ' (Initiated)'}
+                            </p>
+                          </div>
+                          <div
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              refund.status === 'Success'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-yellow-100 text-yellow-800'
+                            }`}
+                          >
+                            {refund.status.toUpperCase()}
+                          </div>
+                        </div>
+
+                        <div className='mt-3 space-y-2'>
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-gray-600'>Refund ID:</span>
+                            <span className='font-medium'>{refund.refund_id}</span>
+                          </div>
+
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-gray-600'>Amount:</span>
+                            <span className='font-medium'>₹{refund.amount}</span>
+                          </div>
+
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-gray-600'>Type:</span>
+                            <span className='font-medium'>{refund.refund_type}</span>
+                          </div>
+
+                          {refund.arn_number && (
+                            <div className='flex justify-between text-sm'>
+                              <span className='text-gray-600'>ARN Number:</span>
+                              <span className='font-medium'>{refund.arn_number}</span>
+                            </div>
+                          )}
+
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-gray-600'>Status Description:</span>
+                            <span className='font-medium'>{refund.status_description}</span>
+                          </div>
+
+                          <div className='mt-2 text-sm text-blue-600 border-t pt-2'>
+                            {refund.status === 'Success'
+                              ? 'Your refund has been processed and will be credited to your account within 2-3 business days. Please check your bank statement before raising a support ticket.'
+                              : 'Your refund has been initiated and will be credited to your account within 3-5 business days. Please check your bank statement before raising a support ticket.'}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className='text-center p-8 bg-gray-100 rounded-lg'>
+                      <p>No refunds found for this order.</p>
+                    </div>
                   )}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        <div className='flex justify-center mt-6'>
+          <Button onClick={() => setIsDialogOpen(true)} className='bg-blue-900 hover:bg-blue-800'>
+            Contact Support
+          </Button>
         </div>
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className='sm:max-w-[425px]'>
           <DialogHeader>
             <DialogTitle>Contact Support</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className='space-y-4'>
             <div>
-              <label className="text-sm font-medium">Reason</label>
+              <label className='text-sm font-medium'>Reason</label>
               <Select
                 value={reason}
                 onValueChange={(value) => {
                   setReason(value);
-                  setIssueType("");
+                  setIssueType('');
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a reason" />
+                  <SelectValue placeholder='Select a reason' />
                 </SelectTrigger>
                 <SelectContent>
                   {reasonOptions.map((option) => (
@@ -381,13 +480,10 @@ const TransactionDetails = () => {
 
             {reason && (
               <div>
-                <label className="text-sm font-medium">Issue Type</label>
-                <Select
-                  value={issueType}
-                  onValueChange={setIssueType}
-                >
+                <label className='text-sm font-medium'>Issue Type</label>
+                <Select value={issueType} onValueChange={setIssueType}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select issue type" />
+                    <SelectValue placeholder='Select issue type' />
                   </SelectTrigger>
                   <SelectContent>
                     {issueOptions[reason as keyof typeof issueOptions]?.map((option) => (
@@ -401,22 +497,22 @@ const TransactionDetails = () => {
             )}
 
             <div>
-              <label className="text-sm font-medium">Description</label>
+              <label className='text-sm font-medium'>Description</label>
               <Textarea
-                placeholder="Please describe your issue"
+                placeholder='Please describe your issue'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="mt-1"
+                className='mt-1'
               />
             </div>
 
-            <Button type="submit" className="w-full bg-blue-900 hover:bg-blue-800">
+            <Button type='submit' className='w-full bg-blue-900 hover:bg-blue-800'>
               Submit
             </Button>
           </form>
         </DialogContent>
       </Dialog>
-    </div>
+    </AppLayout>
   );
 };
 

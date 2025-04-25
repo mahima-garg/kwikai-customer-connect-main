@@ -30,17 +30,17 @@ const Login = () => {
     e.preventDefault();
     if (!captchaVerified) {
       toast({
-        title: "Verification required",
-        description: "Please complete the reCAPTCHA verification",
-        variant: "destructive",
+        title: 'Verification required',
+        description: 'Please complete the reCAPTCHA verification',
+        variant: 'destructive',
       });
       return;
     }
     if (phone.length !== 10) {
       toast({
-        title: "Invalid phone number",
-        description: "Please enter a valid 10-digit phone number",
-        variant: "destructive",
+        title: 'Invalid phone number',
+        description: 'Please enter a valid 10-digit phone number',
+        variant: 'destructive',
       });
       return;
     }
@@ -50,12 +50,12 @@ const Login = () => {
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+
     if (otp !== '123456') {
       toast({
-        title: "Invalid OTP",
-        description: "Please enter the correct OTP",
-        variant: "destructive",
+        title: 'Invalid OTP',
+        description: 'Please enter the correct OTP',
+        variant: 'destructive',
       });
       setLoading(false);
       return;
@@ -64,15 +64,15 @@ const Login = () => {
     try {
       await login(phone);
       toast({
-        title: "Success!",
-        description: "You have been logged in successfully",
+        title: 'Success!',
+        description: 'You have been logged in successfully',
       });
       navigate('/dashboard');
     } catch (error) {
       toast({
-        title: "Error",
-        description: "An error occurred during login",
-        variant: "destructive",
+        title: 'Error',
+        description: 'An error occurred during login',
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -80,35 +80,35 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className='min-h-screen flex'>
       {/* Left Section */}
-      <div className="flex-1 bg-[#0B1C48] p-12">
-        <div className="mb-20">
-          <img src="/gokwik-logo-white.svg" alt="GoKwik" className="h-8" />
+      <div className='flex-1 bg-[#0B1C48] p-12'>
+        <div className='mb-20'>
+          <img src='https://www.gokwik.co/assets/images/logo@2x.png' alt='GoKwik' className='h-8' />
         </div>
-        <div className="text-white max-w-2xl">
-          <h1 className="text-5xl font-bold mb-8">
-            The Only <span className="text-[#F5A623]">D2C</span> Growth Partner You'll Ever Need.
+        <div className='text-white max-w-2xl'>
+          <h1 className='text-5xl font-bold mb-8'>
+            The Only <span className='text-[#F5A623]'>D2C</span> Growth Partner You'll Ever Need.
           </h1>
-          <div className="space-y-6">
+          <div className='space-y-6'>
             <div>
-              <h3 className="text-[#F5A623] text-xl font-semibold mb-2">Kwik Checkout –</h3>
+              <h3 className='text-[#F5A623] text-xl font-semibold mb-2'>Kwik Checkout –</h3>
               <p>Up to 40% conversion uplift with seamless checkout.</p>
             </div>
             <div>
-              <h3 className="text-[#F5A623] text-xl font-semibold mb-2">Kwik Pass –</h3>
+              <h3 className='text-[#F5A623] text-xl font-semibold mb-2'>Kwik Pass –</h3>
               <p>Identify 25% of anonymous shoppers and engage with them.</p>
             </div>
             <div>
-              <h3 className="text-[#F5A623] text-xl font-semibold mb-2">Kwik Engage –</h3>
+              <h3 className='text-[#F5A623] text-xl font-semibold mb-2'>Kwik Engage –</h3>
               <p>Achieve 20X ROAS with personalized multi-channel engagement.</p>
             </div>
             <div>
-              <h3 className="text-[#F5A623] text-xl font-semibold mb-2">Kwik Kart –</h3>
+              <h3 className='text-[#F5A623] text-xl font-semibold mb-2'>Kwik Kart –</h3>
               <p>20% more upsell with smart slide cart customizations.</p>
             </div>
             <div>
-              <h3 className="text-[#F5A623] text-xl font-semibold mb-2">Return Prime –</h3>
+              <h3 className='text-[#F5A623] text-xl font-semibold mb-2'>Return Prime –</h3>
               <p>Achieve 8% higher revenue from returns and exchanges.</p>
             </div>
           </div>
@@ -116,70 +116,53 @@ const Login = () => {
       </div>
 
       {/* Right Section */}
-      <div className="w-[600px] bg-[#F5A623] p-12">
-        <div className="bg-white rounded-xl p-8 shadow-lg">
-          <h2 className="text-3xl font-bold text-[#0B1C48] mb-4">
-            Are You A Customer?
-          </h2>
-          <p className="text-gray-600 mb-8">
+      <div className='w-[600px] bg-[#F5A623] p-12'>
+        <div className='bg-white rounded-xl p-8 shadow-lg'>
+          <h2 className='text-3xl font-bold text-[#0B1C48] mb-4'>Are You A Customer?</h2>
+          <p className='text-gray-600 mb-8'>
             Check the status of orders you have made in the past 6 months. View using your phone number.
           </p>
-          
+
           {step === 'phone' ? (
-            <form onSubmit={handlePhoneSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
-                  Your Mobile Number*
-                </label>
+            <form onSubmit={handlePhoneSubmit} className='space-y-6'>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-gray-700'>Your Mobile Number*</label>
                 <Input
-                  type="tel"
-                  placeholder="Enter your phone number"
+                  type='tel'
+                  placeholder='Enter your phone number'
                   value={phone}
                   onChange={handlePhoneChange}
-                  className="w-full"
+                  className='w-full'
                 />
               </div>
-              <div className="flex justify-center mb-4">
-                <ReCAPTCHA
-                  sitekey="your-recaptcha-site-key"
-                  onChange={handleCaptchaChange}
-                />
+              <div className='flex justify-center mb-4'>
+                <ReCAPTCHA sitekey='your-recaptcha-site-key' onChange={handleCaptchaChange} />
               </div>
               <Button
-                type="submit"
-                className="w-full bg-[#F5A623] hover:bg-[#E69512] text-white"
+                type='submit'
+                className='w-full bg-[#F5A623] hover:bg-[#E69512] text-white'
                 disabled={!captchaVerified}
               >
                 Get OTP
               </Button>
             </form>
           ) : (
-            <form onSubmit={handleOtpSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
-                  Verify your phone number
-                </label>
-                <p className="text-sm text-gray-500 mb-4">
-                  Please enter the OTP sent to {phone}
-                </p>
+            <form onSubmit={handleOtpSubmit} className='space-y-6'>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-gray-700'>Verify your phone number</label>
+                <p className='text-sm text-gray-500 mb-4'>Please enter the OTP sent to {phone}</p>
                 <Input
-                  type="text"
-                  placeholder="Enter OTP"
+                  type='text'
+                  placeholder='Enter OTP'
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  className="w-full"
+                  className='w-full'
                   maxLength={6}
                 />
-                <p className="text-xs text-gray-500">
-                  Use 123456 as the OTP for testing
-                </p>
+                <p className='text-xs text-gray-500'>Use 123456 as the OTP for testing</p>
               </div>
-              <Button
-                type="submit"
-                className="w-full bg-[#F5A623] hover:bg-[#E69512] text-white"
-                disabled={loading}
-              >
-                {loading ? "Verifying..." : "Verify OTP"}
+              <Button type='submit' className='w-full bg-[#F5A623] hover:bg-[#E69512] text-white' disabled={loading}>
+                {loading ? 'Verifying...' : 'Verify OTP'}
               </Button>
             </form>
           )}
