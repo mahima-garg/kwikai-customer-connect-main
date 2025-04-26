@@ -99,13 +99,13 @@ const Index = () => {
               </Button>
             </div>
 
-            <div className='p-4 bg-blue-100 rounded-lg'>
+            {/* <div className='p-4 bg-blue-100 rounded-lg'>
               <h2 className='text-xl font-bold text-blue-800'>Transaction History</h2>
               <p className='text-blue-700'>Access your payment and refund information</p>
               <Button onClick={() => navigate('/transactions')} className='mt-2 bg-blue-600 hover:bg-blue-700'>
                 View Transactions
               </Button>
-            </div>
+            </div> */}
 
             <div className='p-4 bg-purple-100 rounded-lg'>
               <h2 className='text-xl font-bold text-purple-800'>Support</h2>

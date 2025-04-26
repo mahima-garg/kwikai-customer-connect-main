@@ -500,7 +500,7 @@ export const mockOrders: Order[] = [
   {
     order_number: 'KWIK07DF34JK9876123',
     shopify_order_name: '#7925276',
-    order_status: 'cancelled',
+    order_status: 'returned',
     payment_status: true,
     payment_method: 'UPI',
     payment_provider: 'gpay',
@@ -514,7 +514,7 @@ export const mockOrders: Order[] = [
       final_price: 5499,
     },
     currency: 'INR',
-    fulfilled: 'cancelled',
+    fulfilled: 'returned',
     customer: {
       name: 'John Doe',
       email: 'john@example.com',
@@ -570,7 +570,7 @@ export const mockOrders: Order[] = [
       referrer: 'https://www.myntra.com/',
       landing_page: '/products/watch-prime',
     },
-    delivery_status: 'Your order has been cancelled and refund has been processed',
+    delivery_status: 'Your order was picked up successfully and refund has been processed',
     merchant_name: 'Urban Fashion',
   },
   {
