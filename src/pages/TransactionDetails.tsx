@@ -134,7 +134,7 @@ const TransactionDetails = () => {
                               : order.refunds && order.refunds.length > 0
                               ? 'Refund has been processed for this order'
                               : order.order_status === 'not_confirmed' && order.payment_status
-                              ? ' Payment received but order was not confirmed. Auto-Refund has already triggered, it will be credited in 2-3 days.'
+                              ? ' Payment received but order was not confirmed. Auto-Refund has already been triggered, it will be credited in 2-3 days.'
                               : order.delivery_status}
                           </p>
                         </div>
@@ -283,7 +283,7 @@ const TransactionDetails = () => {
                                     : order.refunds && order.refunds.length > 0
                                     ? 'Refund has been processed for this order'
                                     : order.order_status === 'not_confirmed' && order.payment_status
-                                    ? ' Payment received but order was not confirmed. Auto-Refund has already triggered, it will be credited in 2-3 days.'
+                                    ? ' Payment received but order was not confirmed. Auto-Refund has already been triggered, it will be credited in 2-3 days.'
                                     : order.delivery_status}
                                 </p>
                               </div>

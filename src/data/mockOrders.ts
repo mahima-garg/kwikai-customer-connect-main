@@ -341,7 +341,8 @@ export const mockOrders: Order[] = [
         sku: '8905650067890',
         quantity: 1,
         price: 6999,
-        image: 'https://www.libas.in/cdn/shop/files/36617.Main_aac1d834-f8a8-4666-8517-608ed0ea91e5.jpg?v=1739538630&width=1080',
+        image:
+          'https://www.libas.in/cdn/shop/files/36617.Main_aac1d834-f8a8-4666-8517-608ed0ea91e5.jpg?v=1739538630&width=1080',
       },
     ],
     shipping: {
@@ -469,7 +470,8 @@ export const mockOrders: Order[] = [
         sku: '8905650076892',
         quantity: 1,
         price: 3999,
-        image: 'https://cdn.shopify.com/s/files/1/0553/0419/2034/files/Ergo-chair-grey-01_7d36b089-4d03-4b81-8557-00f376e4a722.jpg?v=1739886360&width=2160',
+        image:
+          'https://cdn.shopify.com/s/files/1/0553/0419/2034/files/Ergo-chair-grey-01_7d36b089-4d03-4b81-8557-00f376e4a722.jpg?v=1739886360&width=2160',
       },
     ],
     shipping: {
@@ -533,7 +535,8 @@ export const mockOrders: Order[] = [
         sku: '8905650087654',
         quantity: 1,
         price: 6499,
-        image: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTQ__NXJdOiqPh9tZmnSCctOGKH7QCagAYhlPOO_SzGAMA1gEl24KxsXx8QmK61VVxN11GDN68P3o0U-HeT20sfdWt2tvj65Va6VoGhCPJ3LD-UommJRLq3',
+        image:
+          'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTQ__NXJdOiqPh9tZmnSCctOGKH7QCagAYhlPOO_SzGAMA1gEl24KxsXx8QmK61VVxN11GDN68P3o0U-HeT20sfdWt2tvj65Va6VoGhCPJ3LD-UommJRLq3',
       },
     ],
     shipping: {
@@ -750,7 +753,8 @@ export const mockOrders: Order[] = [
         sku: '8905650034567',
         quantity: 1,
         price: 3499,
-        image: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRgWyn_MbJ0J2nzUmBiHLQecX2dVSpUBCJ4Matek5VqbEAMmhe5LzewJMqPKdPmXXDwWVQfjpLWmPEuIWp8KS7T8iujFB8U4egMFh7hShZoy343K2m2kXkH42G1PP596u-JXkKBVsk&usqp=CAc',
+        image:
+          'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRgWyn_MbJ0J2nzUmBiHLQecX2dVSpUBCJ4Matek5VqbEAMmhe5LzewJMqPKdPmXXDwWVQfjpLWmPEuIWp8KS7T8iujFB8U4egMFh7hShZoy343K2m2kXkH42G1PP596u-JXkKBVsk&usqp=CAc',
       },
     ],
     shipping: {
@@ -878,7 +882,8 @@ export const mockOrders: Order[] = [
         sku: '8905650056789',
         quantity: 1,
         price: 4999,
-        image: 'https://cdn.shopify.com/s/files/1/1276/5299/products/g_5730.jpg?v=1629965361?t=1629965970?v=1745646385736',
+        image:
+          'https://cdn.shopify.com/s/files/1/1276/5299/products/g_5730.jpg?v=1629965361?t=1629965970?v=1745646385736',
       },
     ],
     shipping: {
@@ -973,7 +978,19 @@ export const mockOrders: Order[] = [
         updated_at: '2025-04-28T10:01:00.000Z',
       },
     ],
-    refunds: [],
+    refunds: [
+      {
+        refund_id: 'RKWIK7VUR3S3Q1098765MP',
+        amount: 1299,
+        refund_type: 'Full',
+        status: 'Success',
+        status_description: 'Refund Processed Successfully',
+        created_at: '2025-04-22T18:23:35.213574Z',
+        refunded_at: '2025-04-24T14:30:26.675Z',
+        payment_provider: 'paytm',
+        arn_number: 'ARN98714544387234',
+      },
+    ],
     order_source: {
       source: 'direct',
       referrer: 'https://www.example.com/',

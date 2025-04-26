@@ -126,7 +126,7 @@ export function CustomerDashboard() {
                   <div className='flex-1 min-w-0'>
                     {order.order_status === 'not_confirmed' && order.payment_status ? (
                       <p className='text-xs text-yellow-700 truncate'>
-                        Payment received but order was not confirmed. Auto-Refund has already triggered, it will be credited in 2-3 days.
+                        Payment received but order was not confirmed. Auto-Refund has already been triggered, it will be credited in 2-3 days.
                       </p>
                     ) : (
                       (order.refund_status || (order.refunds && order.refunds.length > 0)) && (
