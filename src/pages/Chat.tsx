@@ -25,7 +25,7 @@ const botResponses = {
         refundInfo.amount
       }\n🔁 Refund Date: ${new Date(refundInfo.refunded_at).toLocaleDateString()}\n📌 ARN Number: ${
         refundInfo.arn_number || 'Processing'
-      }\n\nNote: Refunds are usually credited within 5–8 working days (excluding Saturdays & Sundays). Please check your bank statement before raising a support ticket.`;
+      }\n\nNote: Refunds are usually credited within 2-3 working days (excluding Saturdays & Sundays). Please check your bank statement before raising a support ticket.`;
     } else if (refundInfo.status === 'Initiated') {
       return `🔄 Your refund for Order #${orderNumber} is currently being processed.\nYou'll receive the amount in your bank within 3–5 working days. Please check your bank statement before raising a support ticket.`;
     } else {
@@ -80,12 +80,12 @@ const botResponses = {
         order.payment_method
       }\n- Payment Status: ${order.payment_status ? 'Successful' : 'Failed'}\n`;
     } else if (order.order_status === 'not_confirmed' && order.payment_status) {
-      return `⚠️ Your order #${order.shopify_order_name} was NOT CONFIRMED, but your payment was successful.\nA refund will be processed automatically and you should receive it within 5–8 working days.\nIf you do not receive your refund, please contact support.`;
+      return `⚠️ Your order #${order.shopify_order_name} was NOT CONFIRMED, but your payment was successful.\nA refund will be processed automatically and you should receive it within 2-3 working days.\nIf you do not receive your refund, please contact support.`;
     } else if (order.order_status === 'cancelled' && order.payment_status) {
       const hasRefund = order.refunds && order.refunds.length > 0;
       return `Your order #${order.shopify_order_name} was CANCELLED, but your payment was successful.\n${
         hasRefund
-          ? "A refund has already been initiated. You'll get the amount within 5–8 working days. Please check your bank statement before raising a support ticket."
+          ? "A refund has already been initiated. You'll get the amount within 2-3 working days. Please check your bank statement before raising a support ticket."
           : 'A refund will be processed shortly.'
       }`;
     } else if (order.order_status === 'cancelled') {
@@ -99,13 +99,13 @@ const botResponses = {
   adonc: (orderNumber?: string) =>
     `Looks like your order #${
       orderNumber || ''
-    } didn't go through, but your payment was successful. A refund will be processed automatically and you should receive it within 5–8 working days.\n\nWould you like me to track the refund status for you?`,
+    } didn't go through, but your payment was successful. A refund will be processed automatically and you should receive it within 2-3 working days.\n\nWould you like me to track the refund status for you?`,
   cancelOrder:
     'To cancel your order, please contact the merchant brand directly.\nWe do not handle cancellations from our end.\n\nIs there something else I can help you with?',
   default:
     "I'm not sure how to help with that. Could you please be more specific? You can ask about refund status, order status, or payment issues.",
   wrongCommand: "I don't understand that command. Please ask me about refund status, order status, or payment issues.",
-  thankYou: "You're welcome! Is there anything else I can help you with today?",
+  thankYou: "You're welcome!",
   goodbye: 'Thank you for chatting with us. Have a great day! Feel free to come back anytime you need assistance.',
   followUp: "Is there anything else you'd like to know about your order or refund?",
 };

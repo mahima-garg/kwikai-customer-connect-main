@@ -324,9 +324,9 @@ export const mockOrders: Order[] = [
     currency: 'INR',
     fulfilled: 'unfulfilled',
     customer: {
-      name: 'Amit Kumar',
-      email: 'amit.kumar@example.com',
-      phone: '7654321098',
+      name: 'Chirag Taneja',
+      email: 'c@gokwik.co',
+      phone: '9871454433',
       address: {
         line1: '123, Tech Park, Electronic City',
         city: 'Bangalore',
@@ -337,11 +337,11 @@ export const mockOrders: Order[] = [
     },
     items: [
       {
-        name: 'boAt Nirvana Ion with 120HRS Playtime, Spatial Audio & Hybrid ANC',
+        name: 'Pink Printed Cotton Straight Suit With Dupatta',
         sku: '8905650067890',
         quantity: 1,
         price: 6999,
-        image: 'https://cdn.shopify.com/s/files/1/0057/8938/4802/files/nirvana-ion.png',
+        image: 'https://www.libas.in/cdn/shop/files/36617.Main_aac1d834-f8a8-4666-8517-608ed0ea91e5.jpg?v=1739538630&width=1080',
       },
     ],
     shipping: {
@@ -452,9 +452,9 @@ export const mockOrders: Order[] = [
     currency: 'INR',
     fulfilled: 'unfulfilled',
     customer: {
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '1234567890',
+      name: 'Chirag Taneja',
+      email: 'c@gokwik.co',
+      phone: '9871454433',
       address: {
         line1: '15, Silicon Valley Apartments',
         city: 'Hyderabad',
@@ -465,11 +465,11 @@ export const mockOrders: Order[] = [
     },
     items: [
       {
-        name: 'boAt Stone 1500F 40W Bluetooth Speaker with RGB LEDs',
+        name: 'Frido 3D Posture Plus Ergonomic Chair',
         sku: '8905650076892',
         quantity: 1,
         price: 3999,
-        image: 'https://cdn.shopify.com/s/files/1/0057/8938/4802/files/stone-1500f.png',
+        image: 'https://cdn.shopify.com/s/files/1/0553/0419/2034/files/Ergo-chair-grey-01_7d36b089-4d03-4b81-8557-00f376e4a722.jpg?v=1739886360&width=2160',
       },
     ],
     shipping: {
@@ -516,9 +516,9 @@ export const mockOrders: Order[] = [
     currency: 'INR',
     fulfilled: 'returned',
     customer: {
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '1234567890',
+      name: 'Chirag Taneja',
+      email: 'c@gokwik.co',
+      phone: '9871454433',
       address: {
         line1: '15, Silicon Valley Apartments',
         city: 'Hyderabad',
@@ -533,7 +533,7 @@ export const mockOrders: Order[] = [
         sku: '8905650087654',
         quantity: 1,
         price: 6499,
-        image: 'https://cdn.shopify.com/s/files/1/0057/8938/4802/files/watch-prime.png',
+        image: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTQ__NXJdOiqPh9tZmnSCctOGKH7QCagAYhlPOO_SzGAMA1gEl24KxsXx8QmK61VVxN11GDN68P3o0U-HeT20sfdWt2tvj65Va6VoGhCPJ3LD-UommJRLq3',
       },
     ],
     shipping: {
@@ -733,9 +733,9 @@ export const mockOrders: Order[] = [
     currency: 'INR',
     fulfilled: 'fulfilled',
     customer: {
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '1234567890',
+      name: 'Chirag Taneja',
+      email: 'c@gokwik.co',
+      phone: '9871454433',
       address: {
         line1: '15, Silicon Valley Apartments',
         city: 'Hyderabad',
@@ -750,7 +750,7 @@ export const mockOrders: Order[] = [
         sku: '8905650034567',
         quantity: 1,
         price: 3499,
-        image: 'https://cdn.shopify.com/s/files/1/0057/8938/4802/files/rockerz-450-pro.png',
+        image: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRgWyn_MbJ0J2nzUmBiHLQecX2dVSpUBCJ4Matek5VqbEAMmhe5LzewJMqPKdPmXXDwWVQfjpLWmPEuIWp8KS7T8iujFB8U4egMFh7hShZoy343K2m2kXkH42G1PP596u-JXkKBVsk&usqp=CAc',
       },
     ],
     shipping: {
@@ -797,9 +797,9 @@ export const mockOrders: Order[] = [
     currency: 'INR',
     fulfilled: 'partially_fulfilled',
     customer: {
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '1234567890',
+      name: 'Chirag Taneja',
+      email: 'c@gokwik.co',
+      phone: '9871454433',
       address: {
         line1: '15, Silicon Valley Apartments',
         city: 'Hyderabad',
@@ -810,11 +810,11 @@ export const mockOrders: Order[] = [
     },
     items: [
       {
-        name: 'boAt Airdopes 441 Pro TWS Earbuds with 150H Playtime',
+        name: 'Color Block Loafers : White-Green',
         sku: '8905650045678',
         quantity: 1,
         price: 2499,
-        image: 'https://cdn.shopify.com/s/files/1/0057/8938/4802/files/airdopes-441-pro.png',
+        image: 'https://neemans.com/cdn/shop/files/ND-CBL-GreenWhite-_WebOptimized_d.jpg?v=1726144112&width=800',
       },
     ],
     shipping: {
@@ -861,9 +861,9 @@ export const mockOrders: Order[] = [
     currency: 'INR',
     fulfilled: 'cancelled',
     customer: {
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '1234567890',
+      name: 'Chirag Taneja',
+      email: 'c@gokwik.co',
+      phone: '9871454433',
       address: {
         line1: '15, Silicon Valley Apartments',
         city: 'Hyderabad',
@@ -874,11 +874,11 @@ export const mockOrders: Order[] = [
     },
     items: [
       {
-        name: 'boAt Aavante Bar 1800 120W Soundbar with Dolby Audio',
+        name: 'Chandler',
         sku: '8905650056789',
         quantity: 1,
         price: 4999,
-        image: 'https://cdn.shopify.com/s/files/1/0057/8938/4802/files/aavante-bar-1800.png',
+        image: 'https://cdn.shopify.com/s/files/1/1276/5299/products/g_5730.jpg?v=1629965361?t=1629965970?v=1745646385736',
       },
     ],
     shipping: {
@@ -907,7 +907,7 @@ export const mockOrders: Order[] = [
         created_at: '2025-04-22T18:23:35.213574Z',
         refunded_at: '2025-04-24T14:30:26.675Z',
         payment_provider: 'icici',
-        arn_number: 'ARN12345678901234',
+        arn_number: 'ARN98714544331234',
       },
     ],
     order_source: {
@@ -937,7 +937,7 @@ export const mockOrders: Order[] = [
     currency: 'INR',
     fulfilled: 'unfulfilled',
     customer: {
-      name: 'Deepak Singh',
+      name: 'Chirag Taneja',
       email: 'deepak.singh@example.com',
       phone: '9123456780',
       address: {
@@ -950,11 +950,11 @@ export const mockOrders: Order[] = [
     },
     items: [
       {
-        name: 'Bluetooth Speaker',
+        name: 'Anti-Hair Fall Spa Kit',
         sku: 'SPK123456',
         quantity: 1,
         price: 1499,
-        image: 'https://example.com/images/speaker.png',
+        image: 'https://images.mamaearth.in/catalog/product/1/_/1_white_bg_31.jpg?format=auto&height=600',
       },
     ],
     shipping: {
@@ -992,7 +992,7 @@ export const customerOrdersMap = new Map<string, Order[]>([
   ['7654321098', [mockOrders[3]]],
   ['9012345678', [mockOrders[4]]],
   [
-    '1234567890',
+    '9871454433',
     [mockOrders[5], mockOrders[6], mockOrders[12], mockOrders[3], mockOrders[9], mockOrders[10], mockOrders[11]],
   ],
 ]);
