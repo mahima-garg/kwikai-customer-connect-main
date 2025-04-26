@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ClipboardCheck, Package } from 'lucide-react';
 import { AppLayout } from '@/components/AppLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
 const reasonOptions = ['Refund Status', 'Refund Not Credited', 'Order Status', 'Amount Debited Order Not Confirmed'];
 
@@ -102,176 +103,30 @@ const TransactionDetails = () => {
 
           <TabsContent value='details' className='overflow-y-auto' style={{ height: '600px' }}>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-              <Card className='md:col-span-2'>
-                <CardContent className='p-6'>
-                  <h2 className='text-2xl font-semibold mb-6'>Order Summary</h2>
-
-                  <div className='bg-green-50 p-4 rounded-lg mb-6'>
-                    <h3 className='text-xl font-medium text-green-700'>
-                      Order Status:{' '}
-                      {order.order_status === 'returned'
-                        ? 'RETURNED'
-                        : order.order_status === 'cancelled'
-                        ? 'CANCELLED'
-                        : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
-                        ? 'REFUNDED'
-                        : order.order_status === 'not_confirmed'
-                        ? 'NOT CONFIRMED'
-                        : order.order_status.toUpperCase()}
-                    </h3>
-                    <p className='text-gray-600 mt-2'>
-                      {order.order_status === 'returned'
-                        ? 'Order was picked up and return has been processed'
-                        : order.order_status === 'cancelled'
-                        ? order.delivery_status
-                        : order.refunds && order.refunds.length > 0
-                        ? 'Refund has been processed for this order'
-                        : order.order_status === 'not_confirmed' && order.payment_status
-                        ? 'Payment received but order was not confirmed. Refund will be processed automatically.'
-                        : order.delivery_status}
-                    </p>
-                  </div>
-
-                  <div className='space-y-5'>
-                    <div className='flex justify-between items-center border-b pb-4'>
-                      <span className='text-gray-600 font-medium'>Order Date:</span>
-                      <span className='font-medium text-right'>
-                        {new Date(order.payment_at).toLocaleString('en-US', {
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
-                      </span>
-                    </div>
-
-                    <div className='flex justify-between items-center border-b pb-4'>
-                      <span className='text-gray-600 font-medium'>Order Status:</span>
-                      <div
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          order.order_status === 'returned'
-                            ? 'bg-orange-100 text-orange-800'
-                            : order.order_status === 'cancelled'
-                            ? 'bg-red-100 text-red-800'
-                            : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
-                            ? 'bg-red-100 text-red-800'
-                            : order.order_status === 'shipped'
-                            ? 'bg-blue-100 text-blue-800'
-                            : order.order_status === 'confirmed' || order.order_status === 'delivered'
-                            ? 'bg-green-100 text-green-800'
-                            : order.order_status === 'processing'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : order.order_status === 'not_confirmed'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}
-                      >
-                        {order.order_status === 'returned'
-                          ? 'RETURNED'
-                          : order.order_status === 'cancelled'
-                          ? 'CANCELLED'
-                          : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
-                          ? 'REFUNDED'
-                          : order.order_status === 'not_confirmed'
-                          ? 'NOT CONFIRMED'
-                          : order.order_status.toUpperCase()}
-                      </div>
-                    </div>
-
-                    <div className='flex justify-between items-center border-b pb-4'>
-                      <span className='text-gray-600 font-medium'>Payment Method:</span>
-                      <span className='font-medium capitalize text-right'>{order.payment_method}</span>
-                    </div>
-
-                    <div className='flex justify-between items-center pt-2'>
-                      <span className='text-gray-600 font-medium'>Total Amount:</span>
-                      <span className='font-bold text-lg'>₹{order.total_amount}</span>
-                    </div>
-                  </div>
-
-                  <div className='border rounded-md p-4 bg-gray-50 mt-6'>
-                    <h3 className='text-sm font-semibold mb-3'>Order Summary</h3>
-                    <div className='space-y-2'>
-                      <div className='flex justify-between items-center text-xs'>
-                        <span className='text-gray-600'>Original Price:</span>
-                        <span>₹{order.original_price}</span>
-                      </div>
-                      {order.discount_details.discount_amount > 0 && (
-                        <div className='flex justify-between items-center text-xs text-green-600'>
-                          <span>Discount ({order.discount_details.coupon_code}):</span>
-                          <span>-₹{order.discount_details.discount_amount}</span>
-                        </div>
-                      )}
-                      <div className='flex justify-between items-center font-bold text-sm mt-2 pt-2 border-t'>
-                        <span>Total Amount:</span>
-                        <span>₹{order.total_amount}</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className='p-6'>
-                  <h2 className='text-xl font-semibold mb-4'>Order Items</h2>
-
-                  <div className='space-y-6'>
-                    {order.items.map((item, index) => (
-                      <div key={index} className='border rounded-md p-3 bg-gray-50'>
-                        <div className='flex gap-3 items-start'>
-                          <div className='h-16 w-16 bg-white rounded-md flex items-center justify-center flex-shrink-0'>
-                            {item.image ? (
-                              <img src={item.image} alt={item.name} className='h-14 w-14 object-contain' />
-                            ) : (
-                              <Package className='h-6 w-6 text-gray-500' />
-                            )}
-                          </div>
-                          <div className='flex-1 min-w-0 overflow-hidden'>
-                            <p className='text-sm font-medium line-clamp-2'>{item.name}</p>
-                            <p className='text-xs text-gray-500 mt-1'>Qty: {item.quantity}</p>
-                          </div>
-                        </div>
-
-                        <div className='flex justify-between items-center border-t mt-3 pt-2'>
-                          <div className='text-xs text-gray-600'>Unit Price: ₹{parseFloat(item.price).toFixed(2)}</div>
-                          <div className='text-sm font-bold'>₹{(item.quantity * item.price).toFixed(2)}</div>
-                        </div>
-                      </div>
-                    ))}
-
-                    <div className='border-t pt-4 mt-6'>
-                      <h3 className='font-medium text-base mb-3'>Shipping Information</h3>
-                      <div className='border rounded-md p-4 bg-gray-50'>
-                        <p className='text-sm font-medium'>{order.customer.name}</p>
-                        <p className='text-sm mt-1'>{order.customer.address.line1}</p>
-                        <p className='text-sm'>
-                          {order.customer.address.city}, {order.customer.address.state} {order.customer.address.pincode}
-                        </p>
-                        <p className='text-sm mt-1'>{order.customer.phone}</p>
-                      </div>
-                    </div>
-
-                    <div className='border-t pt-4 mt-6'>
-                      <h3 className='font-medium text-base mb-3'>Delivery Status</h3>
-                      <div className='border rounded-md p-4 bg-gray-50'>
-                        <div className='flex items-center gap-2'>
-                          <div
-                            className={`w-3 h-3 rounded-full ${
-                              order.order_status === 'returned'
-                                ? 'bg-orange-500'
-                                : order.order_status === 'cancelled'
-                                ? 'bg-red-500'
-                                : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
-                                ? 'bg-red-500'
-                                : order.order_status === 'shipped'
-                                ? 'bg-blue-500'
-                                : order.order_status === 'confirmed' || order.order_status === 'delivered'
-                                ? 'bg-green-500'
-                                : order.order_status === 'not_confirmed'
-                                ? 'bg-yellow-500'
-                                : 'bg-yellow-500'
-                            }`}
-                          ></div>
-                          <p className='text-sm font-medium'>
+              <Accordion
+                type='multiple'
+                defaultValue={['order-summary', 'order-items']}
+                className='md:col-span-3 w-full'
+              >
+                <AccordionItem value='order-summary'>
+                  <Card className='md:col-span-2'>
+                    <CardContent className='p-6'>
+                      <AccordionTrigger className='text-2xl font-semibold mb-6'>Order Summary</AccordionTrigger>
+                      <AccordionContent>
+                        <div className='bg-green-50 p-4 rounded-lg mb-6'>
+                          <h3 className='text-xl font-medium text-green-700'>
+                            Order Status:{' '}
+                            {order.order_status === 'returned'
+                              ? 'RETURNED'
+                              : order.order_status === 'cancelled'
+                              ? 'CANCELLED'
+                              : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
+                              ? 'REFUNDED'
+                              : order.order_status === 'not_confirmed'
+                              ? 'NOT CONFIRMED'
+                              : order.order_status.toUpperCase()}
+                          </h3>
+                          <p className='text-gray-600 mt-2'>
                             {order.order_status === 'returned'
                               ? 'Order was picked up and return has been processed'
                               : order.order_status === 'cancelled'
@@ -283,19 +138,172 @@ const TransactionDetails = () => {
                               : order.delivery_status}
                           </p>
                         </div>
-                        {order.shipping.estimated_delivery &&
-                          !(order.refunds && order.refunds.length > 0) &&
-                          order.order_status !== 'returned' &&
-                          order.order_status !== 'cancelled' && (
-                            <p className='text-sm text-gray-500 mt-2'>
-                              Estimated Delivery: {new Date(order.shipping.estimated_delivery).toLocaleDateString()}
-                            </p>
-                          )}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                        <div className='space-y-5'>
+                          <div className='flex justify-between items-center border-b pb-4'>
+                            <span className='text-gray-600 font-medium'>Order Date:</span>
+                            <span className='font-medium text-right'>
+                              {new Date(order.payment_at).toLocaleString('en-US', {
+                                month: 'long',
+                                day: 'numeric',
+                                year: 'numeric',
+                              })}
+                            </span>
+                          </div>
+                          <div className='flex justify-between items-center border-b pb-4'>
+                            <span className='text-gray-600 font-medium'>Order Status:</span>
+                            <div
+                              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                order.order_status === 'returned'
+                                  ? 'bg-orange-100 text-orange-800'
+                                  : order.order_status === 'cancelled'
+                                  ? 'bg-red-100 text-red-800'
+                                  : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
+                                  ? 'bg-red-100 text-red-800'
+                                  : order.order_status === 'shipped'
+                                  ? 'bg-blue-100 text-blue-800'
+                                  : order.order_status === 'confirmed' || order.order_status === 'delivered'
+                                  ? 'bg-green-100 text-green-800'
+                                  : order.order_status === 'processing'
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : order.order_status === 'not_confirmed'
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : 'bg-red-100 text-red-800'
+                              }`}
+                            >
+                              {order.order_status === 'returned'
+                                ? 'RETURNED'
+                                : order.order_status === 'cancelled'
+                                ? 'CANCELLED'
+                                : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
+                                ? 'REFUNDED'
+                                : order.order_status === 'not_confirmed'
+                                ? 'NOT CONFIRMED'
+                                : order.order_status.toUpperCase()}
+                            </div>
+                          </div>
+                          <div className='flex justify-between items-center border-b pb-4'>
+                            <span className='text-gray-600 font-medium'>Payment Method:</span>
+                            <span className='font-medium capitalize text-right'>{order.payment_method}</span>
+                          </div>
+                          <div className='flex justify-between items-center pt-2'>
+                            <span className='text-gray-600 font-medium'>Total Amount:</span>
+                            <span className='font-bold text-lg'>₹{order.total_amount}</span>
+                          </div>
+                        </div>
+                        <div className='border rounded-md p-4 bg-gray-50 mt-6'>
+                          <h3 className='text-sm font-semibold mb-3'>Order Summary</h3>
+                          <div className='space-y-2'>
+                            <div className='flex justify-between items-center text-xs'>
+                              <span className='text-gray-600'>Original Price:</span>
+                              <span>₹{order.original_price}</span>
+                            </div>
+                            {order.discount_details.discount_amount > 0 && (
+                              <div className='flex justify-between items-center text-xs text-green-600'>
+                                <span>Discount ({order.discount_details.coupon_code}):</span>
+                                <span>-₹{order.discount_details.discount_amount}</span>
+                              </div>
+                            )}
+                            <div className='flex justify-between items-center font-bold text-sm mt-2 pt-2 border-t'>
+                              <span>Total Amount:</span>
+                              <span>₹{order.total_amount}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </CardContent>
+                  </Card>
+                </AccordionItem>
+                <AccordionItem value='order-items'>
+                  <Card>
+                    <CardContent className='p-6'>
+                      <AccordionTrigger className='text-xl font-semibold mb-4'>Order Items</AccordionTrigger>
+                      <AccordionContent>
+                        <div className='space-y-6'>
+                          {order.items.map((item, index) => (
+                            <div key={index} className='border rounded-md p-3 bg-gray-50'>
+                              <div className='flex gap-3 items-start'>
+                                <div className='h-16 w-16 bg-white rounded-md flex items-center justify-center flex-shrink-0'>
+                                  {item.image ? (
+                                    <img src={item.image} alt={item.name} className='h-14 w-14 object-contain' />
+                                  ) : (
+                                    <Package className='h-6 w-6 text-gray-500' />
+                                  )}
+                                </div>
+                                <div className='flex-1 min-w-0 overflow-hidden'>
+                                  <p className='text-sm font-medium line-clamp-2'>{item.name}</p>
+                                  <p className='text-xs text-gray-500 mt-1'>Qty: {item.quantity}</p>
+                                </div>
+                              </div>
+                              <div className='flex justify-between items-center border-t mt-3 pt-2'>
+                                <div className='text-xs text-gray-600'>
+                                  Unit Price: ₹{parseFloat(item.price).toFixed(2)}
+                                </div>
+                                <div className='text-sm font-bold'>₹{(item.quantity * item.price).toFixed(2)}</div>
+                              </div>
+                            </div>
+                          ))}
+                          <div className='border-t pt-4 mt-6'>
+                            <h3 className='font-medium text-base mb-3'>Shipping Information</h3>
+                            <div className='border rounded-md p-4 bg-gray-50'>
+                              <p className='text-sm font-medium'>{order.customer.name}</p>
+                              <p className='text-sm mt-1'>{order.customer.address.line1}</p>
+                              <p className='text-sm'>
+                                {order.customer.address.city}, {order.customer.address.state}{' '}
+                                {order.customer.address.pincode}
+                              </p>
+                              <p className='text-sm mt-1'>{order.customer.phone}</p>
+                            </div>
+                          </div>
+                          <div className='border-t pt-4 mt-6'>
+                            <h3 className='font-medium text-base mb-3'>Delivery Status</h3>
+                            <div className='border rounded-md p-4 bg-gray-50'>
+                              <div className='flex items-center gap-2'>
+                                <div
+                                  className={`w-3 h-3 rounded-full ${
+                                    order.order_status === 'returned'
+                                      ? 'bg-orange-500'
+                                      : order.order_status === 'cancelled'
+                                      ? 'bg-red-500'
+                                      : order.refunds && order.refunds.length > 0 && order.order_status !== 'returned'
+                                      ? 'bg-red-500'
+                                      : order.order_status === 'shipped'
+                                      ? 'bg-blue-500'
+                                      : order.order_status === 'confirmed' || order.order_status === 'delivered'
+                                      ? 'bg-green-500'
+                                      : order.order_status === 'not_confirmed'
+                                      ? 'bg-yellow-500'
+                                      : 'bg-yellow-500'
+                                  }`}
+                                ></div>
+                                <p className='text-sm font-medium'>
+                                  {order.order_status === 'returned'
+                                    ? 'Order was picked up and return has been processed'
+                                    : order.order_status === 'cancelled'
+                                    ? order.delivery_status
+                                    : order.refunds && order.refunds.length > 0
+                                    ? 'Refund has been processed for this order'
+                                    : order.order_status === 'not_confirmed' && order.payment_status
+                                    ? 'Payment received but order was not confirmed. Refund will be processed automatically.'
+                                    : order.delivery_status}
+                                </p>
+                              </div>
+                              {order.shipping.estimated_delivery &&
+                                !(order.refunds && order.refunds.length > 0) &&
+                                order.order_status !== 'returned' &&
+                                order.order_status !== 'cancelled' && (
+                                  <p className='text-sm text-gray-500 mt-2'>
+                                    Estimated Delivery:{' '}
+                                    {new Date(order.shipping.estimated_delivery).toLocaleDateString()}
+                                  </p>
+                                )}
+                            </div>
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </CardContent>
+                  </Card>
+                </AccordionItem>
+              </Accordion>
             </div>
           </TabsContent>
 
